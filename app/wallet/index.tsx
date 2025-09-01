@@ -60,12 +60,12 @@ export default function WalletScreen() {
 
   const getTransactionDescription = (tx: any) => {
     if (tx.booking_id) {
-      if (tx.type === "hold") return "Payment held for booking"
-      if (tx.type === "release") return "Payment received for service"
-      if (tx.type === "refund") return "Refund for cancelled booking"
+      if (tx.type === "hold") return "Rezervasyon için ödeme bekletildi"
+      if (tx.type === "release") return "Hizmet için ödeme alındı"
+      if (tx.type === "refund") return "İptal edilen rezervasyon iadesi"
     }
-    if (tx.from_user_id === user?.id) return "Points sent"
-    return "Points received"
+    if (tx.from_user_id === user?.id) return "Puan gönderildi"
+    return "Puan alındı"
   }
 
   const getTransactionIcon = (type: string) => {
@@ -105,7 +105,7 @@ export default function WalletScreen() {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <MaterialIcons name="arrow-back" size={24} color={colors.text} onPress={() => router.back()} />
-            <Text style={styles.headerTitle}>My Wallet</Text>
+            <Text style={styles.headerTitle}>Cüzdanım</Text>
             <View style={{ width: 24 }} />
           </View>
         </View>
@@ -114,7 +114,7 @@ export default function WalletScreen() {
         <Surface style={styles.balanceCard} elevation={3}>
           <View style={styles.balanceHeader}>
             <MaterialIcons name="account-balance-wallet" size={32} color={colors.primary} />
-            <Text style={styles.balanceTitle}>Available Balance</Text>
+            <Text style={styles.balanceTitle}>Kullanılabilir Bakiye</Text>
           </View>
           <Text style={styles.balanceAmount}>
             {isLoading ? "..." : (wallet?.balance_points || 0)} Points
@@ -132,7 +132,7 @@ export default function WalletScreen() {
             icon="add"
             style={styles.actionButton}
           >
-            Add Points
+            Puan Ekle
           </PrimaryButton>
           <PrimaryButton
             mode="outlined"
@@ -140,13 +140,13 @@ export default function WalletScreen() {
             icon="swap-horiz"
             style={styles.actionButton}
           >
-            Transfer
+            Transfer Et
           </PrimaryButton>
         </View>
 
         {/* Transaction History */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent Transactions</Text>
+          <Text style={styles.sectionTitle}>Son İşlemler</Text>
 
           {transactions && transactions.length > 0 ? (
             <View style={styles.transactionsList}>
@@ -181,9 +181,9 @@ export default function WalletScreen() {
           ) : (
             <Surface style={styles.emptyState} elevation={1}>
               <MaterialIcons name="receipt" size={48} color={colors.textSecondary} />
-              <Text style={styles.emptyStateText}>No transactions yet</Text>
+              <Text style={styles.emptyStateText}>Henüz işlem yok</Text>
               <Text style={styles.emptyStateSubtext}>
-                Your transaction history will appear here
+                İşlem geçmişiniz burada görünecek
               </Text>
             </Surface>
           )}

@@ -22,21 +22,21 @@ const offerSchema = z.object({
 type OfferForm = z.infer<typeof offerSchema>
 
 const categories = [
-  "Technology",
-  "Design",
-  "Writing",
-  "Marketing",
-  "Education",
-  "Health",
+  "Teknoloji",
+  "Tasarım",
+  "Yazı",
+  "Pazarlama",
+  "Eğitim",
+  "Sağlık",
   "Fitness",
-  "Music",
-  "Photography",
-  "Cooking",
-  "Cleaning",
-  "Repair",
-  "Transportation",
-  "Childcare",
-  "Elderly Care",
+  "Müzik",
+  "Fotoğrafçılık",
+  "Yemek",
+  "Temizlik",
+  "Tamir",
+  "Ulaşım",
+  "Çocuk Bakımı",
+  "Yaşlı Bakımı",
 ]
 
 export default function CreateOfferScreen() {
@@ -128,11 +128,11 @@ export default function CreateOfferScreen() {
                 name="title"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    label="Service Title"
+                    label="Hizmet Başlığı"
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    placeholder="e.g., Web Development, Logo Design, Math Tutoring"
+                    placeholder="örn., Web Geliştirme, Logo Tasarımı, Matematik Dersleri"
                     error={!!errors.title}
                     style={styles.input}
                     mode="outlined"
@@ -166,7 +166,7 @@ export default function CreateOfferScreen() {
                 name="hourly_point_rate"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    label="Hourly Rate (Points)"
+                    label="Saatlik Ücret (Puan)"
                     value={value.toString()}
                     onChangeText={(text) => onChange(Number.parseInt(text) || 0)}
                     onBlur={onBlur}
@@ -207,14 +207,14 @@ export default function CreateOfferScreen() {
 
             {/* Preview */}
             <Surface style={styles.previewContainer} elevation={2}>
-              <Text style={styles.sectionTitle}>Preview</Text>
+              <Text style={styles.sectionTitle}>Önizleme</Text>
               <View style={styles.previewCard}>
                 <View style={styles.previewHeader}>
                   <View style={styles.previewInfo}>
                     <Text style={styles.previewTitle}>{watch("title") || "Service Title"}</Text>
                     <Text style={styles.previewUser}>{user?.name}</Text>
                     <Text style={styles.previewLocation}>
-                      {user?.district && user?.city ? `${user.district}, ${user.city}` : "Location"}
+                      {user?.district && user?.city ? `${user.district}, ${user.city}` : "Konum"}
                     </Text>
                   </View>
                   <View style={styles.previewMeta}>

@@ -10,24 +10,24 @@ import { colors, typography } from "../lib/theme"
 
 const faqs = [
   {
-    question: "How do I offer a service?",
-    answer: "Go to the home screen and tap 'Offer Service'. Fill in the details about your service, set your rates, and publish it."
+    question: "Nasıl hizmet sunabilirim?",
+    answer: "Ana sayfaya gidin ve 'Hizmet Sunun' butonuna tıklayın. Hizmetinizle ilgili detayları doldurun, ücretlerinizi belirleyin ve yayınlayın."
   },
   {
-    question: "How do I request a service?",
-    answer: "Use the 'Discover' tab to browse available services, then tap 'Request Service' on any listing that interests you."
+    question: "Nasıl hizmet isteğinde bulunabilirim?",
+    answer: "Mevcut hizmetlere göz atmak için 'Keşfet' sekmesini kullanın, ardından ilginizi çeken herhangi bir ilana 'Hizmet İste' butonuna tıklayın."
   },
   {
-    question: "How do points work?",
-    answer: "Points are our platform currency. Earn points by providing services or purchase them in your wallet."
+    question: "Puanlar nasıl çalışır?",
+    answer: "Puanlar platformumuzun para birimidir. Hizmet sağlayarak puan kazanın veya cüzdanınızdan satın alın."
   },
   {
-    question: "How do I contact a service provider?",
-    answer: "Once you book a service, you can message the provider directly through the Messages tab."
+    question: "Hizmet sağlayıcısıyla nasıl iletişim kurabilirim?",
+    answer: "Bir hizmeti rezerve ettikten sonra, Mesajlar sekmesi aracılığıyla sağlayıcıya doğrudan mesaj gönderebilirsiniz."
   },
   {
-    question: "What if I need to cancel a booking?",
-    answer: "Go to your bookings, select the booking, and use the cancel option. Check our cancellation policy for refunds."
+    question: "Rezervasyonu iptal etmem gerekirse ne yapmalıyım?",
+    answer: "Rezervasyonlarınıza gidin, rezervasyonu seçin ve iptal seçeneğini kullanın. İadeler için iptal politikamızı kontrol edin."
   }
 ]
 
@@ -39,14 +39,14 @@ export default function HelpScreen() {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <MaterialIcons name="arrow-back" size={24} color={colors.text} onPress={() => router.back()} />
-            <Text style={styles.headerTitle}>Help & Support</Text>
+            <Text style={styles.headerTitle}>Yardım ve Destek</Text>
             <View style={{ width: 24 }} />
           </View>
         </View>
 
         {/* Quick Actions */}
         <Surface style={styles.quickActions} elevation={2}>
-          <Text style={styles.sectionTitle}>Get Help</Text>
+          <Text style={styles.sectionTitle}>Yardım Alın</Text>
           <View style={styles.actionGrid}>
             <Card style={styles.actionCard} mode="outlined" onPress={() => router.push("/contact")}>
               <Card.Content style={styles.actionContent}>

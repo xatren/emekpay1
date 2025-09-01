@@ -86,12 +86,12 @@ export default function AddPointsScreen() {
         <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 16 }}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 20, fontWeight: "600", color: colors.text }}>Add Points</Text>
+        <Text style={{ fontSize: 20, fontWeight: "600", color: colors.text }}>Puan Ekle</Text>
       </View>
 
       <View style={{ flex: 1, padding: 20 }}>
         <Text style={{ fontSize: 16, fontWeight: "600", color: colors.text, marginBottom: 16 }}>
-          Choose a Package
+          Bir Paket Seçin
         </Text>
 
         {POINT_PACKAGES.map((pkg, index) => (

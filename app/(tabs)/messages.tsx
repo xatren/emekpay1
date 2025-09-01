@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react"
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native"
+import React, { useState, useEffect, useRef } from "react"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Animated, Dimensions } from "react-native"
 import { Surface, Searchbar, FAB, Avatar } from "react-native-paper"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { MaterialIcons } from "@expo/vector-icons"
+import { LinearGradient } from "expo-linear-gradient"
 import { router, useLocalSearchParams } from "expo-router"
 import { useThemeColors } from "../../lib/theme-provider"
-import { typography, extendedColors } from "../../lib/theme"
+import { typography } from "../../lib/theme"
 import { useAuthStore } from "../../hooks/useAuthStore"
 import { supabase } from "../../lib/supabase"
+
+const { width, height } = Dimensions.get('window')
 
 interface Conversation {
   id: string
@@ -26,6 +29,26 @@ export default function MessagesScreen() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [refreshing, setRefreshing] = useState(false)
+
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  const slideAnim = useRef(new Animated.Value(30)).current
+
+  // Start animations when component mounts
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start()
+  }, [])
 
   // Check if there's a conversation to open from params
   const params = useLocalSearchParams()
@@ -143,8 +166,9 @@ export default function MessagesScreen() {
 
   const renderConversation = ({ item }: { item: Conversation }) => (
     <TouchableOpacity
-      style={[styles.conversationItem, { backgroundColor: colors.surface }]}
+      style={styles.conversationItem}
       onPress={() => router.push(`/chat/${item.threadId}`)}
+      activeOpacity={0.8}
     >
       <View style={styles.conversationContent}>
         <Avatar.Image
@@ -154,10 +178,10 @@ export default function MessagesScreen() {
         />
         <View style={styles.conversationText}>
           <View style={styles.conversationHeader}>
-            <Text style={[styles.participantName, { color: colors.onSurface }]}>
+            <Text style={styles.participantName}>
               {item.participantName}
             </Text>
-            <Text style={[styles.timestamp, { color: extendedColors.textSecondary }]}>
+            <Text style={styles.timestamp}>
               {new Date(item.lastMessageTime).toLocaleDateString('tr-TR', {
                 day: 'numeric',
                 month: 'short'
@@ -165,15 +189,15 @@ export default function MessagesScreen() {
             </Text>
           </View>
           <Text
-            style={[styles.lastMessage, { color: extendedColors.textSecondary }]}
+            style={styles.lastMessage}
             numberOfLines={1}
           >
             {item.lastMessage}
           </Text>
         </View>
         {item.unreadCount > 0 && (
-          <View style={[styles.unreadBadge, { backgroundColor: colors.primary }]}>
-            <Text style={[styles.unreadCount, { color: colors.surface }]}>
+          <View style={styles.unreadBadge}>
+            <Text style={styles.unreadCount}>
               {item.unreadCount}
             </Text>
           </View>
@@ -187,92 +211,195 @@ export default function MessagesScreen() {
     loadConversations()
   }
 
+  const styles = createStyles(colors)
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.onSurface }]}>Messages</Text>
-        <Text style={[styles.headerSubtitle, { color: extendedColors.textSecondary }]}>
-          Chat with service providers and clients
-        </Text>
-      </View>
-
-      <Searchbar
-        placeholder="Search conversations..."
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        style={[styles.searchBar, {
-          backgroundColor: colors.surface,
-          color: colors.onSurface
-        }]}
-        iconColor={extendedColors.textSecondary}
-        inputStyle={{ color: colors.onSurface }}
-      />
-
-      {filteredConversations.length > 0 ? (
-        <FlatList
-          data={filteredConversations}
-          keyExtractor={(item) => item.id}
-          renderItem={renderConversation}
-          style={styles.list}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Surface style={[styles.emptyState, { backgroundColor: colors.surface }]} elevation={1}>
-            <MaterialIcons name="chat-bubble-outline" size={64} color={extendedColors.textSecondary} />
-            <Text style={[styles.emptyStateText, { color: extendedColors.textSecondary }]}>
-              {searchQuery ? 'No conversations found' : 'No messages yet'}
+    <LinearGradient
+      colors={[colors.primary, colors.secondary]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.gradientContainer}
+    >
+      <SafeAreaView style={styles.container}>
+        <Animated.View
+          style={[
+            styles.content,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.header}>
+            <View style={styles.logoContainer}>
+              <View style={styles.logo}>
+                <Text style={styles.logoText}>EP</Text>
+              </View>
+            </View>
+            <Text style={styles.headerTitle}>Mesajlar</Text>
+            <Text style={styles.headerSubtitle}>
+              Hizmet sağlayıcılar ve müşterilerle sohbet edin
             </Text>
-            <Text style={[styles.emptyStateSubtext, { color: extendedColors.textSecondary }]}>
-              {searchQuery
-                ? 'Try a different search term'
-                : 'Start a conversation by contacting a service provider or responding to a service request'
-              }
-            </Text>
+          </View>
+
+          <Surface style={styles.searchContainer} elevation={4}>
+            <Searchbar
+              placeholder="Sohbetlerde ara..."
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              style={styles.searchBar}
+              iconColor={colors.onSurfaceVariant}
+              inputStyle={{ color: colors.onSurface }}
+            />
           </Surface>
-        </View>
-      )}
 
-      <FAB
-        icon="message-plus"
-        style={[styles.fab, { backgroundColor: colors.primary }]}
-        onPress={() => router.push('/contacts')}
-        color={colors.surface}
-      />
-    </SafeAreaView>
+          <Surface style={styles.conversationsContainer} elevation={4}>
+            {filteredConversations.length > 0 ? (
+              <FlatList
+                data={filteredConversations}
+                keyExtractor={(item) => item.id}
+                renderItem={renderConversation}
+                style={styles.list}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                showsVerticalScrollIndicator={false}
+              />
+            ) : (
+              <View style={styles.emptyContainer}>
+                <View style={styles.emptyState}>
+                  <MaterialIcons name="chat-bubble-outline" size={64} color={colors.onSurfaceVariant} />
+                  <Text style={styles.emptyStateText}>
+              {searchQuery ? 'Sohbet bulunamadı' : 'Henüz mesaj yok'}
+                  </Text>
+                  <Text style={styles.emptyStateSubtext}>
+              {searchQuery
+                ? 'Farklı bir arama terimi deneyin'
+                : 'Bir hizmet sağlayıcısıyla iletişime geçerek veya hizmet isteğine yanıt vererek sohbet başlatın'
+              }
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Surface>
+
+          <FAB
+            icon="message-plus"
+            style={[styles.fab, { backgroundColor: colors.surface }]}
+            onPress={() => router.push('/contacts')}
+            color={colors.primary}
+          />
+        </Animated.View>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
+  gradientContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
+  },
+  content: {
+    flex: 1,
+    paddingBottom: 40,
   },
   header: {
     padding: 24,
     paddingBottom: 16,
+    alignItems: "center",
+  },
+  logoContainer: {
+    marginBottom: 16,
+  },
+  logo: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  logoText: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: colors.surface,
+    letterSpacing: 1,
   },
   headerTitle: {
     ...typography.heading,
-    marginBottom: 4,
+    color: colors.surface,
+    marginBottom: 8,
+    textAlign: "center",
+    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   headerSubtitle: {
     ...typography.body,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: "center",
+  },
+  searchContainer: {
+    margin: 24,
+    marginTop: 8,
+    padding: 20,
+    borderRadius: 24,
+    backgroundColor: colors.surface,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 12,
   },
   searchBar: {
-    margin: 16,
-    marginTop: 0,
-    borderRadius: 12,
+    backgroundColor: colors.surfaceVariant,
+    borderRadius: 16,
+  },
+  conversationsContainer: {
+    flex: 1,
+    margin: 24,
+    marginTop: 8,
+    borderRadius: 24,
+    backgroundColor: colors.surface,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 12,
   },
   list: {
     flex: 1,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   conversationItem: {
-    borderRadius: 12,
+    borderRadius: 16,
     marginVertical: 4,
     padding: 16,
+    backgroundColor: colors.surfaceVariant,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   conversationContent: {
     flexDirection: 'row',
@@ -293,19 +420,23 @@ const styles = StyleSheet.create({
   participantName: {
     ...typography.subheading,
     fontWeight: '600',
+    color: colors.onSurface,
   },
   timestamp: {
     ...typography.caption,
     fontSize: 12,
+    color: colors.onSurfaceVariant,
   },
   lastMessage: {
     ...typography.body,
     fontSize: 14,
+    color: colors.onSurfaceVariant,
   },
   unreadBadge: {
     position: 'absolute',
     top: 12,
     right: 12,
+    backgroundColor: colors.primary,
     borderRadius: 10,
     minWidth: 20,
     height: 20,
@@ -317,6 +448,7 @@ const styles = StyleSheet.create({
     ...typography.caption,
     fontSize: 12,
     fontWeight: '600',
+    color: colors.surface,
   },
   emptyContainer: {
     flex: 1,
@@ -328,20 +460,31 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     gap: 16,
+    backgroundColor: colors.surfaceVariant,
   },
   emptyStateText: {
     ...typography.subheading,
     textAlign: "center",
+    color: colors.onSurface,
   },
   emptyStateSubtext: {
     ...typography.body,
     textAlign: "center",
     lineHeight: 24,
+    color: colors.onSurfaceVariant,
   },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
 })

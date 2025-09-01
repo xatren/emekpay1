@@ -273,7 +273,7 @@ export default function BookingDetailScreen() {
 
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ alignItems: "center" }}>
-              <Text style={{ color: theme.colors.textSecondary, fontSize: 12, marginBottom: 4 }}>Client</Text>
+              <Text style={{ color: theme.colors.textSecondary, fontSize: 12, marginBottom: 4 }}>Müşteri</Text>
               <Text style={{ color: theme.colors.text, fontWeight: "500" }}>{booking.client.full_name}</Text>
             </View>
 
@@ -304,7 +304,7 @@ export default function BookingDetailScreen() {
             disabled={actionLoading}
           >
             <Text style={{ color: "white", textAlign: "center", fontWeight: "600", fontSize: 16 }}>
-              {actionLoading ? "Processing..." : "Mark as Completed"}
+              {actionLoading ? "İşleniyor..." : "Tamamlandı Olarak İşaretle"}
             </Text>
           </TouchableOpacity>
         )}

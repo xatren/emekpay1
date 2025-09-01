@@ -1,17 +1,19 @@
 import { Tabs } from "expo-router"
 import { MaterialIcons } from "@expo/vector-icons"
-import { colors } from "../../lib/theme"
+import { useThemeColors } from "../../lib/theme-provider"
 
 export default function TabLayout() {
+  const colors = useThemeColors()
+  
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarInactiveTintColor: colors.onSurfaceVariant,
         tabBarStyle: {
           backgroundColor: colors.surface,
-          borderTopColor: colors.border,
+          borderTopColor: colors.outline,
           borderTopWidth: 1,
           paddingBottom: 8,
           paddingTop: 8,
@@ -27,28 +29,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: "Ana Sayfa",
           tabBarIcon: ({ color, size }) => <MaterialIcons name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="discover"
         options={{
-          title: "Discover",
+          title: "Keşfet",
           tabBarIcon: ({ color, size }) => <MaterialIcons name="search" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="messages"
         options={{
-          title: "Messages",
+          title: "Mesajlar",
           tabBarIcon: ({ color, size }) => <MaterialIcons name="chat" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "Profil",
           tabBarIcon: ({ color, size }) => <MaterialIcons name="person" size={size} color={color} />,
         }}
       />

@@ -16,7 +16,7 @@ export default function AboutScreen() {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <MaterialIcons name="arrow-back" size={24} color={colors.text} onPress={() => router.back()} />
-            <Text style={styles.headerTitle}>About EmekPay</Text>
+            <Text style={styles.headerTitle}>EmekPay Hakkında</Text>
             <View style={{ width: 24 }} />
           </View>
         </View>
@@ -28,29 +28,29 @@ export default function AboutScreen() {
               <Text style={styles.logoText}>EP</Text>
             </View>
           </View>
-          <Text style={styles.tagline}>Connecting Skills with Opportunities</Text>
-          <Text style={styles.version}>Version 1.0.0</Text>
+          <Text style={styles.tagline}>Yetenekleri Fırsatlarla Birleştiriyoruz</Text>
+          <Text style={styles.version}>Sürüm 1.0.0</Text>
         </View>
 
         {/* Mission */}
         <Surface style={styles.missionCard} elevation={2}>
-          <Text style={styles.sectionTitle}>Our Mission</Text>
+          <Text style={styles.sectionTitle}>Misyonumuz</Text>
           <Text style={styles.missionText}>
-            EmekPay is a revolutionary platform that connects skilled individuals with people who need their services.
-            We believe everyone has valuable skills to offer, and we're here to make it easy to monetize those skills
-            while helping others find the help they need.
+            EmekPay, yetenekli bireyleri hizmetlerine ihtiyaç duyan kişilerle birleştiren devrimci bir platformdur.
+            Herkesin sunabileceği değerli yetenekleri olduğuna inanıyor ve bu yetenekleri para kazanmaya dönüştürmeyi kolaylaştırırken
+            diğerlerinin ihtiyaç duydukları yardımı bulmalarına yardımcı oluyoruz.
           </Text>
         </Surface>
 
         {/* Features */}
         <Surface style={styles.featuresCard} elevation={2}>
-          <Text style={styles.sectionTitle}>What We Offer</Text>
+          <Text style={styles.sectionTitle}>Neler Sunuyoruz</Text>
 
           <View style={styles.featureList}>
             <View style={styles.featureItem}>
               <MaterialIcons name="work" size={24} color={colors.primary} />
               <View style={styles.featureContent}>
-                <Text style={styles.featureTitle}>Service Marketplace</Text>
+                <Text style={styles.featureTitle}>Hizmet Pazaryeri</Text>
                 <Text style={styles.featureDescription}>
                   Browse and book services from skilled professionals in your area
                 </Text>
@@ -116,7 +116,7 @@ export default function AboutScreen() {
 
             <View style={styles.contactItem}>
               <MaterialIcons name="location-on" size={20} color={colors.textSecondary} />
-              <Text style={styles.contactText}>Istanbul, Turkey</Text>
+              <Text style={styles.contactText}>Ankara, Turkey</Text>
             </View>
           </View>
 

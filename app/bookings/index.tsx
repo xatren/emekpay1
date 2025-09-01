@@ -44,10 +44,10 @@ export default function BookingsScreen() {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "confirmed": return "Confirmed"
-      case "pending": return "Pending"
-      case "completed": return "Completed"
-      case "cancelled": return "Cancelled"
+      case "confirmed": return "Onaylandı"
+      case "pending": return "Bekliyor"
+      case "completed": return "Tamamlandı"
+      case "cancelled": return "İptal Edildi"
       default: return status
     }
   }
@@ -68,7 +68,7 @@ export default function BookingsScreen() {
         <View style={styles.content}>
           {isLoading ? (
             <Surface style={styles.loadingState} elevation={1}>
-              <Text style={styles.loadingText}>Loading bookings...</Text>
+              <Text style={styles.loadingText}>Rezervasyonlar yükleniyor...</Text>
             </Surface>
           ) : bookings && bookings.length > 0 ? (
             <View style={styles.bookingsList}>
