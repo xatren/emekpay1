@@ -153,15 +153,15 @@ export default function BookingDetailScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return theme.colors.warning
+        return "#D97706"
       case "confirmed":
         return theme.colors.primary
       case "completed":
-        return theme.colors.success
+        return "#059669"
       case "cancelled":
         return theme.colors.error
       default:
-        return theme.colors.textSecondary
+        return "#64748B"
     }
   }
 

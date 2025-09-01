@@ -19,7 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { LinearGradient } from "expo-linear-gradient"
 import { useAuthStore } from "../../hooks/useAuthStore"
-import { colors, typography } from "../../lib/theme"
+import { useThemeColors } from "../../lib/theme-provider"
+import { typography, extendedColors } from "../../lib/theme"
 import PrimaryButton from "../../components/PrimaryButton"
 
 const loginSchema = z.object({
@@ -39,6 +40,7 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false)
   const [isFocused, setIsFocused] = useState<string | null>(null)
   const { signInWithEmail } = useAuthStore()
+  const colors = useThemeColors()
 
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -170,12 +172,12 @@ export default function LoginScreen() {
                           isFocused === 'email' && styles.inputFocused
                         ]}
                         mode="outlined"
-                        outlineColor={isFocused === 'email' ? colors.primary : colors.border}
+                        outlineColor={isFocused === 'email' ? colors.primary : colors.outline}
                         activeOutlineColor={colors.primary}
                         left={
                           <TextInput.Icon
                             icon="email"
-                            color={isFocused === 'email' ? colors.primary : colors.textSecondary}
+                            color={isFocused === 'email' ? colors.primary : colors.onSurfaceVariant}
                           />
                         }
                       />
@@ -209,12 +211,12 @@ export default function LoginScreen() {
                           isFocused === 'password' && styles.inputFocused
                         ]}
                         mode="outlined"
-                        outlineColor={isFocused === 'password' ? colors.primary : colors.border}
+                        outlineColor={isFocused === 'password' ? colors.primary : colors.outline}
                         activeOutlineColor={colors.primary}
                         left={
                           <TextInput.Icon
                             icon="lock"
-                            color={isFocused === 'password' ? colors.primary : colors.textSecondary}
+                            color={isFocused === 'password' ? colors.primary : colors.onSurfaceVariant}
                           />
                         }
                       />
@@ -247,7 +249,7 @@ export default function LoginScreen() {
                   <IconButton
                     icon="shield-check"
                     size={16}
-                    iconColor={colors.success}
+                    iconColor={colors.tertiary}
                   />
                   <Text style={styles.securityText}>
                     Güvenli şifre ile giriş
@@ -317,13 +319,13 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 28,
     fontWeight: "700",
-    color: colors.surface,
+    color: extendedColors.surface,
     letterSpacing: 1,
   },
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: colors.surface,
+    color: extendedColors.surface,
     textAlign: "center",
     marginBottom: 12,
     textShadowColor: 'rgba(0, 0, 0, 0.1)',
@@ -344,7 +346,7 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: 28,
     borderRadius: 24,
-    backgroundColor: colors.surface,
+    backgroundColor: extendedColors.surface,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -362,14 +364,14 @@ const styles = StyleSheet.create({
   formTitle: {
     fontSize: 24,
     fontWeight: "700",
-    color: colors.text,
+    color: extendedColors.text,
     marginBottom: 8,
     textAlign: "center",
   },
   formSubtitle: {
     fontSize: 14,
     fontWeight: "400",
-    color: colors.textSecondary,
+    color: extendedColors.textSecondary,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -377,12 +379,12 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   input: {
-    backgroundColor: colors.background,
+    backgroundColor: extendedColors.background,
     borderRadius: 12,
   },
   inputFocused: {
-    backgroundColor: colors.surface,
-    shadowColor: colors.primary,
+    backgroundColor: extendedColors.surface,
+    shadowColor: extendedColors.primary,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -399,14 +401,14 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     fontWeight: "500",
-    color: colors.error,
+    color: extendedColors.error,
     marginLeft: 4,
   },
   submitButton: {
     marginTop: 16,
     borderRadius: 12,
     height: 56,
-    shadowColor: colors.primary,
+    shadowColor: extendedColors.primary,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -425,12 +427,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: extendedColors.border,
   },
   securityText: {
     fontSize: 12,
     fontWeight: "500",
-    color: colors.textSecondary,
+    color: extendedColors.textSecondary,
     marginLeft: 6,
   },
   footer: {
@@ -446,7 +448,7 @@ const styles = StyleSheet.create({
   },
   signupLinkBold: {
     fontWeight: "600",
-    color: colors.surface,
+    color: extendedColors.surface,
     textDecorationLine: "underline",
   },
   footerText: {

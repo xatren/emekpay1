@@ -1,6 +1,7 @@
-import { MD3LightTheme } from "react-native-paper"
+import { MD3LightTheme, MD3DarkTheme, MD3Theme } from "react-native-paper"
 
-export const theme = {
+// Light Theme
+export const lightTheme: MD3Theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
@@ -8,14 +9,46 @@ export const theme = {
     secondary: "#EA580C", // Energy Orange
     tertiary: "#059669", // Success Green
     error: "#DC2626", // Error Red
-    warning: "#D97706", // Warning Yellow
     surface: "#FFFFFF",
     background: "#F8FAFC", // Light Gray
     onSurface: "#1E293B", // Dark Gray
     onBackground: "#1E293B",
+    surfaceVariant: "#F1F5F9",
+    onSurfaceVariant: "#64748B",
+    outline: "#CBD5E1",
+    outlineVariant: "#E2E8F0",
   },
 }
 
+// Dark Theme
+export const darkTheme: MD3Theme = {
+  ...MD3DarkTheme,
+  colors: {
+    ...MD3DarkTheme.colors,
+    primary: "#3B82F6", // Lighter blue for dark theme
+    secondary: "#FB923C", // Lighter orange for dark theme
+    tertiary: "#10B981", // Lighter green for dark theme
+    error: "#EF4444", // Lighter red for dark theme
+    surface: "#0F172A", // Dark navy
+    background: "#020617", // Darker navy
+    onSurface: "#F8FAFC", // Light text
+    onBackground: "#F8FAFC",
+    surfaceVariant: "#1E293B",
+    onSurfaceVariant: "#CBD5E1",
+    outline: "#475569",
+    outlineVariant: "#64748B",
+  },
+}
+
+// Legacy theme (light mode default)
+export const theme = lightTheme
+
+// Function to get theme colors (use this instead of static colors)
+export const getThemeColors = (isDark: boolean = false) => {
+  return isDark ? darkTheme.colors : lightTheme.colors
+}
+
+// TEMPORARY: Legacy colors export (will be removed after migration)
 export const colors = {
   primary: "#2563EB",
   secondary: "#EA580C",
@@ -28,6 +61,9 @@ export const colors = {
   textSecondary: "#64748B",
   border: "#E2E8F0",
 }
+
+// Legacy alias
+export const extendedColors = colors
 
 export const typography = {
   heading: {

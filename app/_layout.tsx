@@ -7,8 +7,9 @@ import { PaperProvider } from "react-native-paper"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { StatusBar } from "expo-status-bar"
 import * as SplashScreen from "expo-splash-screen"
-import { theme } from "../lib/theme"
+import { ThemeProvider, useTheme } from "../lib/theme-provider"
 import { useAuthStore } from "../hooks/useAuthStore"
+import { notificationHandler } from "../lib/notification-handler"
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync()
@@ -22,8 +23,9 @@ const queryClient = new QueryClient({
   },
 })
 
-export default function RootLayout() {
+function AppContent() {
   const { restoreSession, loading } = useAuthStore()
+  const { theme, isDarkMode } = useTheme()
 
   useEffect(() => {
     async function prepare() {
@@ -31,6 +33,11 @@ export default function RootLayout() {
         console.log('🚀 Root layout preparing...')
         await restoreSession()
         console.log('✅ Session restored successfully')
+
+        // Initialize notifications
+        console.log('📱 Initializing notifications...')
+        await notificationHandler.initialize()
+        console.log('✅ Notifications initialized successfully')
       } catch (e) {
         console.error('❌ Error during app preparation:', e)
         console.warn(e)
@@ -48,18 +55,29 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <PaperProvider theme={theme}>
-        <SafeAreaProvider>
-          <StatusBar style="light" backgroundColor={theme.colors.primary} />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="onboarding" />
-            <Stack.Screen name="(auth)" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-        </SafeAreaProvider>
-      </PaperProvider>
-    </QueryClientProvider>
+    <PaperProvider theme={theme}>
+      <SafeAreaProvider>
+        <StatusBar
+          style={isDarkMode ? "light" : "dark"}
+          backgroundColor={theme.colors.primary}
+        />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="onboarding" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </SafeAreaProvider>
+    </PaperProvider>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppContent />
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }
